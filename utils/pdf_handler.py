@@ -8,13 +8,19 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from config import logger
 
+import os
+
+# Font dosyalarının güvenli yolu (Proje içindeki assets/fonts klasörü)
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+FONT_DIR = os.path.join(BASE_DIR, "assets", "fonts")
+
 # TR/UTF-8 desteği için TTF fontları kaydediyoruz (Örn: Arial)
 try:
-    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
-    pdfmetrics.registerFont(TTFont('Arial-Bold', 'arialbd.ttf'))
+    pdfmetrics.registerFont(TTFont('Arial', os.path.join(FONT_DIR, 'arial.ttf')))
+    pdfmetrics.registerFont(TTFont('Arial-Bold', os.path.join(FONT_DIR, 'arialbd.ttf')))
     FONT_NORMAL = 'Arial'
     FONT_BOLD = 'Arial-Bold'
-    logger.info("Arial TTF fontları başarıyla yüklendi (Türkçe karakter desteği aktif).")
+    logger.info("Arial TTF fontları klasörden başarıyla yüklendi (Türkçe karakter desteği aktif).")
 except Exception as e:
     logger.warning(f"Arial TTF fontu bulunamadı, varsayılan fonta dönülüyor. (Türkçe harflerde sorun olabilir): {e}")
     FONT_NORMAL = 'Helvetica'
